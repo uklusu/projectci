@@ -5,12 +5,12 @@ pipeline {
         githubPush()
       }
     stages {
-      environment {
-        IP_ADD =  sh(returnStdout: true, script: "cat /home/ubuntu/iptest")
-        IP_PROD =  sh(returnStdout: true, script: "cat /home/ubuntu/ipprod")
-      }
-        stage('sending files') {
 
+        stage('sending files') {
+          environment {
+            IP_ADD =  sh(returnStdout: true, script: "cat /home/ubuntu/iptest")
+            IP_PROD =  sh(returnStdout: true, script: "cat /home/ubuntu/ipprod")
+          }
             steps {
 
                 sh ''' #!/bin/bash
@@ -23,7 +23,10 @@ pipeline {
         }
 
         stage('updating website_on_test') {
-
+          environment {
+            IP_ADD =  sh(returnStdout: true, script: "cat /home/ubuntu/iptest")
+            IP_PROD =  sh(returnStdout: true, script: "cat /home/ubuntu/ipprod")
+          }
             steps {
               sh ''' #!/bin
                 ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@$IP_ADD sudo docker cp /home/ubuntu/pages servs:/var/www/html/pages
@@ -45,6 +48,5 @@ cludes/
           '''
           }
         }
-
         }
-      }
+}
