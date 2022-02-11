@@ -14,8 +14,8 @@ pipeline {
             steps {
 
                 sh ''' #!/bin/bash
-                scp -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa $PWD/pages ubuntu@$IP_ADD:/home/ubuntu
-                scp -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa $PWD/pages ubuntu@$IP_PROD:/home/ubuntu
+                scp -r -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa $PWD/pages ubuntu@$IP_ADD:/home/ubuntu
+                scp -r -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa $PWD/pages ubuntu@$IP_PROD:/home/ubuntu
                 '''
                 echo "file transfer done"
 
