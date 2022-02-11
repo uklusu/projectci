@@ -30,7 +30,7 @@ pipeline {
           }
             steps {
               sh ''' #!/bin
-                ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@$IP_ADD sudo docker cp /home/ubuntu/pages servs:/var/www/html/pages
+                ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@$IP_ADD sudo docker cp /home/ubuntu/pages servs:/var/www/html
 
 
                '''
