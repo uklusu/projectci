@@ -43,8 +43,8 @@ pipeline {
             IP_PROD =  sh(returnStdout: true, script: "cat /home/ubuntu/ipprod")
           }
             steps {
-              sh '''#!/bin
-              ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@18.218.50.149 echo "hello_hello"
+              sh '''  #!/bin
+              ssh -v -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@18.218.50.149 echo "hello_hello"
               ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@18.218.50.149 sudo docker cp /home/ubuntu/pages servs:/var/www/html
 
 
