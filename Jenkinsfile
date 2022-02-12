@@ -14,7 +14,7 @@ pipeline {
             steps {
 
                 sh ''' #!/bin/bash
-                sudo chmod 777 pages
+                sudo chmod 777 pages/*
                 scp -r -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa $PWD/pages ubuntu@$IP_ADD:/home/ubuntu
                 scp -r -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa $PWD/pages ubuntu@$IP_PROD:/home/ubuntu
                 '''
@@ -44,8 +44,10 @@ pipeline {
           }
             steps {
               sh '''#!/bin
-               ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@$IP_PROD sudo docker cp /home/ubuntu/pages servs:/var/www/html/
+              sudo ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@$IP_PROD sudo docker cp /home/ubuntu/pages servs:/var/www/html/
 cludes/
+
+
           '''
           }
         }
