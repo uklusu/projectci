@@ -45,8 +45,8 @@ pipeline {
             steps {
               sh '''#!/bin
               ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@18.218.50.149 echo "hello_hello"
-              ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@$IP_PROD sudo docker cp /home/ubuntu/pages servs:/var/www/html
-cludes/
+              ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@18.218.50.149 sudo docker cp /home/ubuntu/pages servs:/var/www/html
+
 
 
           '''
