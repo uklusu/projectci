@@ -2,10 +2,7 @@
 @import "variables.less";
 
 #content {
-  padding: @default-gutter-size/2;
-  @media(min-width: @media-breakpoint-sm) {
-    padding: @default-gutter-size;
-  }
+  padding: @default-gutter-size;
 }
 
 .loader-wrapper {
@@ -21,6 +18,13 @@
 
 #header {
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: @default-gutter-size;
+  align-items: center;
+  .logotype img {
+    max-height: 25px;
+  }
   .customer-service {
     align-self: center;
     text-align: right;
@@ -36,41 +40,20 @@
 }
 
 #box-checkout-cart {
-  .row {
-    margin-bottom: 0;
+  .thumbnail {
+    max-width: 64px;
   }
-  [class*="col-"] {
-    align-self: center;
-  }
-  .headings {
-    font-weight: 600;
-    padding: @default-gutter-size/2 @default-gutter-size;
-    border-bottom: 2px solid @default-border-color;
-  }
-  .items {
-    margin-bottom: 1em;
-  }
-  .item {
-    padding: @default-gutter-size/2 @default-gutter-size;
-    border-bottom: 1px solid #e0e0e0;
-    &:nth-child(odd) {
-      background: @table-striped-row-background-odd;
+  tr td {
+    vertical-align: middle;
+    &:first-child a {
+      display: inline-block;
     }
-    &:nth-child(even) {
-      background: @table-striped-row-background-even;
+    &:last-child {
+      text-align: right;
     }
-  }
-  .name {
-    font-weight: 600;
   }
   .error {
     color: #f00;
-  }
-  .unit-price, .total-price {
-    font-size: 1.1em;
-  }
-  .unit-price::before {
-    //content: 'à';
   }
   .subtotal {
     font-size: 1.5em;
@@ -84,7 +67,7 @@
   }
   button[type=submit]:not([disabled]) {
     font-weight: bold;
-    color: rgba(255, 0, 0, 1);
+    color: rgba(255,0,0,1);
     animation: flasher 1s linear infinite;
   }
 }

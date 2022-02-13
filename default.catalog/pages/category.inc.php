@@ -1,45 +1,39 @@
-<aside id="sidebar">
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/column_left.inc.php'); ?>
-</aside>
+<div id="sidebar">
+  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_category_tree.inc.php'); ?>
 
-<main id="content">
+  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
+</div>
+
+<div id="content">
   {snippet:notices}
-  {snippet:breadcrumbs}
 
-  <div id="box-category" class="box">
-
+  <article id="box-category" class="box">
+	
     <?php if ($products) { ?>
-    <div class="btn-group pull-right hidden-xs">
+    <div class="dropdown pull-right">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Sort by <i class="fa fa-angle-down"></i>
+      </button>
+
+      <ul class="dropdown-menu">
 <?php
   foreach ($sort_alternatives as $key => $value) {
     if ($_GET['sort'] == $key) {
-      echo '<span class="btn btn-default active">'. $value .'</span>';
+      echo '<li><a href="#" class="active">'. $value .'</a></li>';
     } else {
-      echo '<a class="btn btn-default" href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $value .'</a>';
+      echo '<li><a href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $value .'</a></li>';
     }
   }
 ?>
+      </ul>
     </div>
-    <?php } ?>
+    <?php } ?>	
 
     <h1 class="title"><?php echo $h1_title; ?></h1>
 
-    <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
-    <p class="description"><?php echo $description; ?></p>
-    <?php } ?>
-
-    <?php if ($_GET['page'] == 1 && $subcategories) { ?>
-    <div class="categories row half-gutter hidden-xs">
-      <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
-    </div>
-    <?php } ?>
-
-    <?php if ($products) { ?>
-    <div class="products row half-gutter">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type']); ?>
-    </div>
-    <?php } ?>
+    <section class="listing products">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type'], array('category_id')); ?>
+    </section>
 
     <?php echo $pagination; ?>
-  </div>
-</main>
+  </article>
+</div>

@@ -159,3 +159,17 @@
     right: auto;
   }
 }
+
+// Mega dropdown
+.mega-dropdown {
+  position: static !important;
+  .dropdown-menu {
+    padding: @default-gutter-size 0;
+    width: 100%;
+
+    * > ul {
+      list-style: none;
+      width: 100%;
+    }
+  }
+}

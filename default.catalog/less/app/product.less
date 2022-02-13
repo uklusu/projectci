@@ -7,7 +7,7 @@
 #box-product {
 
   .images {
-    margin-bottom: @default-gutter-size*2;
+    margin-bottom: @default-gutter-size * 2;
   }
 
   .main-image {
@@ -18,35 +18,40 @@
       font-size: 12px;
       font-weight: bold;
       top: 15px;
-      left: -35px;
-      padding: @default-gutter-size/4 @default-gutter-size/2;
+      left: 15px;
       position: absolute;
       text-align: center;
       text-transform: uppercase;
-      transform: rotate(-45deg);
-      width: 140px;
+			border-radius: 50%;
+      width: 50px;
+			height: 50px;
+			line-height: 50px;
       &.new {
-        background: rgba(251, 184, 41, 0.85);
+        background: #0315ff;
       }
       &.sale {
-        background: rgba(237, 60, 50, 0.85);
+        background: #dc0345;
+				line-height: @default-line-height;
+				height: 60px;
+				width: 60px;
+				padding-top: 17px;
       }
     }
   }
 
   .price-wrapper {
-    font-size: 1.75em;
-    .regular-price, .recommended-price {
-      font-size: 0.75em;
-    }
-    .campaign-price {
-      color: #cc0000;
-    }
+    font-size: 2em;
+	font-weight: bold;
+  }
+  .regular-price {
+    font-size: 0.75em;
+  }
+  .campaign-price {
+    color: #cc0000;
   }
   .tax {
     color: #999999;
   }
-
   .stock-available {
     .value {
       color: #009900;
@@ -62,15 +67,38 @@
       color: #cc0000;
     }
   }
-  .out-of-stock-notice {
-    background: @default-color;
-    border: 1px solid @default-border-color;
-    padding: @default-gutter-size;
-    border-radius: @default-border-radius;
-  }
   .social-bookmarks {
-    font-size: 1.75em;
-    margin: @default-gutter-size 0;
+    position: fixed;
+    top: 50%;
+	right: 0;
+	background: @primary-color;
+	z-index: 15;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+	a {
+      display: block;
+      text-align: center;
+      padding: 16px;
+      transition: all 0.3s ease;
+      color: #fff;
+      font-size: 1.75em;	
+	  &:hover {
+	    background-color: #000;
+	  }
+	}
+    .facebook {
+	  background: #3B5998;
+    }
+    .twitter {
+	  background: #55ACEE;
+    }
+    .whatsapp {
+	  background: #25D366;
+    }
+    .pinterest {
+	  background: #bb0000;
+    }	
   }
   .description {
     p:first-child {

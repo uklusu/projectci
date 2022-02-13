@@ -4,23 +4,24 @@
 .thumbnail a > img,
 .img-responsive {
   display: block;
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  margin: 0 auto;
+  border-radius: @default-border-radius;  
+  //margin: 0 auto;
 }
 
 .thumbnail {
   display: block;
-  padding: @default-gutter-size/4;
+  //padding: @default-gutter-size/4;
   line-height: @default-line-height;
   background-color: #fff;
-  border: 1px solid @default-border-color;
+  //border: 1px solid @default-border-color;
   border-radius: @default-border-radius;
   transition: border .2s ease-in-out;
   > img,
   a > img {
-    margin-right: auto;
-    margin-left: auto;
+    //margin-right: auto;
+    //margin-left: auto;
   }
 }
 

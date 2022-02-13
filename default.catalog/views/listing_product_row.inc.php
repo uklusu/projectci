@@ -8,7 +8,6 @@
 
     <div class="info">
       <h4 class="name"><?php echo $name; ?></h4>
-      <div class="manufacturer-name hidden-xs"><?php echo !empty($manufacturer) ? $manufacturer['name'] : '&nbsp;'; ?></div>
       <div class="description"><?php echo $short_description; ?></div>
     </div>
 
@@ -20,8 +19,4 @@
       <?php } ?>
     </div>
   </a>
-
-  <button class="preview btn btn-default" data-toggle="lightbox" data-target="<?php echo htmlspecialchars($link) ?>" data-require-window-width="768" data-max-width="980">
-    <?php echo functions::draw_fonticon('fa-search-plus'); ?>
-  </button>
 </article>

@@ -1,18 +1,24 @@
-<aside id="sidebar" class="hidden-xs">
-  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/column_left.inc.php'); ?>
-</aside>
+<style>
+@media only screen and (max-width: 990px) {
+  #box-login-create {
+    margin-top: 0;
+	}
+	#box-login {
+		margin-bottom: 0;
+	}
+}
+</style>
 
-<main id="content">
+<div id="content">
   {snippet:notices}
-  {snippet:breadcrumbs}
 
   <div class="row">
     <div class="col-md-6">
-      <div class="box-login" class="box" style="padding: 0 3em;">
+      <section id="box-login" class="box" style="">
 
         <h2 class="title"><?php echo language::translate('title_sign_in', 'Sign In'); ?></h2>
 
-        <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'style="max-width: 320px;"'); ?>
+        <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'style="max-width: none;"'); ?>
           <?php echo functions::form_draw_hidden_field('redirect_url', true); ?>
 
           <div class="form-group">
@@ -36,12 +42,12 @@
           </p>
 
         <?php echo functions::form_draw_form_end(); ?>
-      </div>
+      </section>
     </div>
 
     <div class="col-md-6">
 
-      <div id="box-login-create" class="box" style="padding: 0 3em;">
+      <section id="box-login-create" class="box">
 
         <h2 class="title"><?php echo language::translate('title_create_an_account', 'Create an Account'); ?></h2>
 
@@ -54,7 +60,7 @@
         </ul>
 
         <p><a class="btn btn-default" href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_register_now', 'Register Now'); ?></a><p>
-      </div>
+      </section>
     </div>
   </div>
-</main>
+</div>

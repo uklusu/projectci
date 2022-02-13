@@ -10,9 +10,6 @@ input, button, select, textarea {
 input[type="number"] {
   text-align: right;
 }
-input[type="number"]::-webkit-inner-spin-button {
-  margin-left: @form-input-padding;
-}
 
 .form-group {
   &.required label::after {
@@ -34,6 +31,7 @@ input[type="number"]::-webkit-inner-spin-button {
   background: @form-input-background;
   border: 1px solid @default-border-color;
   border-radius: @default-border-radius;
+  //box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 
 .form-control {

@@ -1,21 +1,26 @@
 /* Breadcrumbs - Bootstrap Compatible */
 
 ul.breadcrumb {
-  margin: 0 0 @default-gutter-size 0;
-  padding: @default-gutter-size/2 @default-gutter-size;
-  margin-bottom: @default-gutter-size;
+  padding: @default-gutter-size * 2.5 @default-gutter-size;
   list-style: none;
-  background-color: @breadcrumbs-background-color;
-  border-radius: @default-border-radius;
+  text-align: left;  
+  //font-size: 20px;
+  //font-weight: bold;
   li {
-    display: inline-block;
-    &::before {
-      content: "/\00a0";
+    display: inline;
+    &::after {
+	  font: normal normal normal 14px/1 FontAwesome;
+      content: "\f105";
       padding: 0 5px;
-      color: #ccc;
+      color: @default-text-color;
     }
     a {
       color: inherit;
     }
   }
+  li:last-child {
+    &::after {
+      content: none; 
+	}
+  }  
 }

@@ -1,0 +1,137 @@
+/* Drawer Menu */
+
+.drawer {
+  display: none;
+}
+.drawer__overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 200;
+  opacity: 0;
+  
+  transition: opacity 0.3s;
+  will-change: opacity;
+  background-color: #000;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;      
+}
+
+.drawer__header {
+  /* Optional */
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  //align-items: left; 
+}
+
+.drawer__close {
+  /* Optional */
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.drawer__wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  max-width: 500px;
+  z-index: 9999;
+  overflow: auto;
+  
+  transition: transform 0.3s;
+  will-change: transform;
+  background-color: #fff;
+ 
+  display: flex;
+  flex-direction: column; 
+
+  -webkit-transform: translate3d(103%, 0, 0);
+  transform: translate3d(103%, 0, 0); /* extra 3% because of box-shadow */ 
+  
+  -webkit-overflow-scrolling: touch; /* enables momentum scrolling in iOS overflow elements */
+
+  /* Optional */
+  box-shadow: 0 2px 6px #777;
+}
+
+.drawer__search {
+  .drawer-form {
+    .input-group {
+      border: none;
+			border-radius: 0;
+      box-shadow: none;
+      background: #f9f9f9;
+    }
+  }
+}
+
+.drawer__content {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  flex-grow: 1;
+  /* Optional */
+  padding: 1.5rem;
+  .main-nav li{
+    display: block;
+    padding: @default-gutter-size/2 0;
+    font-size: 17px;
+    a {
+      color: inherit;
+      font-weight: bold;
+    }
+  }
+  .drawer-bottom {
+    margin-top: 100px;
+    a {
+      text-decoration: none;
+    }
+    .social-connect {
+      .fa-stack {
+        font-size: 25px;
+      }
+      .fa-stack-1x {
+        color: #fff;
+      }
+      .fa-stack-2x {
+        color: @primary-color;
+      }
+    }
+  }
+}
+
+.drawer--left .drawer__wrapper {
+  left: 0;
+  right: auto;
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+}
+
+.drawer.is-active {
+  display: block;
+}
+
+.drawer.is-visible .drawer__wrapper {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.drawer.is-visible .drawer__overlay {
+  opacity: 0.5;
+}

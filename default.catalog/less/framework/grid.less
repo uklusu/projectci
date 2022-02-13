@@ -2,8 +2,25 @@
 
 .twelve-eighty {
   min-width: 320px;
-  max-width: 1280px;
+  max-width: none;
   margin: 0 auto;
+}
+
+.container {
+  padding: 0 @default-gutter-size;
+  margin: 0 auto;
+  @media (min-width: (@media-breakpoint-xs)) {
+    max-width: 540px;
+  }  
+  @media (min-width: (@media-breakpoint-sm)) {
+    max-width: 720px;
+  }
+  @media (min-width: (@media-breakpoint-md)) {
+    max-width: 960px;
+  }  
+  @media (min-width: (@media-breakpoint-lg)) {
+    max-width: 1140px;
+  }
 }
 
 .pull-left {
