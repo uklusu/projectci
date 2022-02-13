@@ -1,50 +1,26 @@
-<?php if ($listing_type == 'column') { ?>
-  <div class="col-xs-6 col-sm-4 col-md-4">
-    <div class="product column hover-light" data-id="<?php echo $product_id; ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
-      <a class="link"<?php echo !empty(document::$settings['product_modal_window']) ? ' data-toggle="lightbox" data-require-window-width="768"' : ''; ?> href="<?php echo htmlspecialchars($link) ?>">
-        <div class="image-wrapper">
-          <img class="image img-responsive" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
-          <?php echo $sticker; ?>
-        </div>
-        <div class="area-bg">
-          <div class="top-area-bg">
-            <div class="bottom-area-bg">
-              <h3 class="featured-title "><?php echo $name; ?></h3>
-                <div class="manufacturer"><?php echo !empty($manufacturer) ? $manufacturer['name'] : '&nbsp;'; ?></div>
-                <div class="price-wrapper">
-                <?php if ($campaign_price) { ?>
-                <s class="regular-price"><?php echo currency::format($regular_price); ?></s> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
-                <?php } else { ?>
-                <span class="price"><?php echo currency::format($regular_price); ?></span>
-                <?php } ?>
-              </div>
-            </div>
-          </div>
-        </div>
-      </a>
+<article class="product">
+  <a class="link" href="<?php echo htmlspecialchars($link) ?>" title="<?php echo htmlspecialchars($name); ?>" data-id="<?php echo $product_id; ?>" data-sku="<?php echo htmlspecialchars($sku); ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($final_price); ?>">
+
+    <div class="image-wrapper">
+      <img class="image img-responsive" src="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?>" srcset="<?php echo document::href_link(WS_DIR_APP . $image['thumbnail']); ?> 1x, <?php echo document::href_link(WS_DIR_APP . $image['thumbnail_2x']); ?> 2x" style="aspect-ratio: <?php echo $image['ratio']; ?>;" alt="<?php echo htmlspecialchars($name); ?>" />
+      <?php echo $sticker; ?>
     </div>
-  </div>
-<?php } else if ($listing_type == 'row') { ?>
-  <div class="col-xs-12">
-    <div class="product hover-light" data-id="<?php echo $product_id; ?>" data-name="<?php echo htmlspecialchars($name); ?>" data-price="<?php echo currency::format_raw($campaign_price ? $campaign_price : $regular_price); ?>">
-      <a class="link"<?php echo !empty(document::$settings['product_modal_window']) ? ' data-toggle="lightbox" data-require-window-width="768"' : ''; ?> href="<?php echo htmlspecialchars($link) ?>">
-        <div class="image-wrapper">
-          <img class="image" src="<?php echo htmlspecialchars($image['thumbnail']); ?>" srcset="<?php echo htmlspecialchars($image['thumbnail']); ?> 1x, <?php echo htmlspecialchars($image['thumbnail_2x']); ?> 2x" alt="<?php echo htmlspecialchars($name); ?>" />
-          <?php echo $sticker; ?>
-        </div>
-        <div class="info">
-          <div class="name"><?php echo $name; ?></div>
-          <p class="description"><?php echo $short_description; ?></p>
-          <div class="manufacturer"><?php echo !empty($manufacturer) ? $manufacturer['name'] : '&nbsp;'; ?></div>
-        </div>
-        <div class="price-wrapper">
-          <?php if ($campaign_price) { ?>
-          <s class="regular-price"><?php echo currency::format($regular_price); ?></s> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
-          <?php } else { ?>
-          <span class="price"><?php echo currency::format($regular_price); ?></span>
-          <?php } ?>
-        </div>
-      </a>
+
+    <div class="info">
+      <h4 class="name"><?php echo $name; ?></h4>
+      <div class="manufacturer-name"><?php echo !empty($manufacturer['name']) ? $manufacturer['name'] : '&nbsp;'; ?></div>
+      <p class="description"><?php echo $short_description; ?></p>
+      <div class="price-wrapper">
+        <?php if ($campaign_price) { ?>
+        <del class="regular-price"><?php echo currency::format($regular_price); ?></del> <strong class="campaign-price"><?php echo currency::format($campaign_price); ?></strong>
+        <?php } else { ?>
+        <span class="price"><?php echo currency::format($regular_price); ?></span>
+        <?php } ?>
+      </div>
     </div>
-  </div>
-<?php } else trigger_error('Unknown product listing type definition ('. $listing_type .')', E_USER_WARNING); ?>
+  </a>
+
+  <button class="preview btn btn-default btn-sm" data-toggle="lightbox" data-target="<?php echo htmlspecialchars($link) ?>" data-require-window-width="768" data-max-width="980">
+    <?php echo functions::draw_fonticon('fa-search-plus'); ?>
+  </button>
+</article>

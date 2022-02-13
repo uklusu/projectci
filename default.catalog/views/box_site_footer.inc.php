@@ -1,28 +1,29 @@
-<footer id="footer">
-  <div class="area-bg">
-    <div class="top-area-bg">
-      <div class="bottom-area-bg">
-        <div class="row">
-          <div class="hidden-xs col-sm-fourths col-md-fifths categories">
-            <h3 class="title footer-title"><?php echo language::translate('title_categories', 'Categories'); ?></h3>
-            <ul class="list-unstyled">
-            <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
-            </ul>
-          </div>
+<footer id="footer" class="hidden-print">
+
+ <hr />
+
+  <div class="columns">
+    <section class="categories hidden-xs">
+      <h3 class="title"><?php echo language::translate('title_categories', 'Categories'); ?></h3>
+      <ul class="list-unstyled">
+        <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
+      </ul>
+    </section>
 
     <?php if ($manufacturers) { ?>
-    <div class="hidden-xs hidden-sm col-md-fifths manufacturers">
+    <section class="manufacturers hidden-xs hidden-sm">
       <h3 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
       <ul class="list-unstyled">
       <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. htmlspecialchars($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
       </ul>
-    </div>
+    </section>
     <?php } ?>
 
-    <div class="col-xs-halfs col-sm-fourths col-md-fifths account">
+    <?php if (settings::get('accounts_enabled')) { ?>
+    <section class="account">
       <h3 class="title"><?php echo language::translate('title_account', 'Account'); ?></h3>
       <ul class="list-unstyled">
-        <li><a href="<?php echo document::ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
+        <li><a href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
         <li><a href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></a></li>
         <?php if (empty(customer::$data['id'])) { ?>
         <li><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>
@@ -33,16 +34,17 @@
         <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
         <?php } ?>
       </ul>
-    </div>
+    </section>
+    <?php } ?>
 
-    <div class="col-xs-halfs col-sm-fourths col-md-fifths information">
+    <section class="information">
       <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
       <ul class="list-unstyled">
         <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
       </ul>
-    </div>
+    </section>
 
-    <div class="hidden-xs col-sm-fourths col-md-fifths contact">
+    <section class="contact hidden-xs">
       <h3 class="title"><?php echo language::translate('title_contact', 'Contact'); ?></h3>
 
       <p><?php echo nl2br(settings::get('store_postal_address')); ?></p>
@@ -52,14 +54,13 @@
       <?php } ?>
 
       <p><?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></p>
-    </div>
+    </section>
   </div>
-</div>
-</div>
-</div>
-</footer>
 
-<div id="copyright" class="twelve-eighty">
-  <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
-  <div class="notice">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>&nbsp;&nbsp;Design by <a href="https://jinuxweb.com/services/litecart-ecommerce" target="_blank" title="Free e-commerce platform">Jinux-Web ®</a></div>
-</div>
+  <section id="copyright">
+    <div class="notice fourteen-forty">
+      <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
+      Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>
+    </div>
+  </section>
+</footer>
