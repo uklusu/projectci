@@ -1,68 +1,28 @@
+<footer id="footer">
+  <div class="area-bg">
+    <div class="top-area-bg">
+      <div class="bottom-area-bg">
+        <div class="row">
+          <div class="hidden-xs col-sm-fourths col-md-fifths categories">
+            <h3 class="title footer-title"><?php echo language::translate('title_categories', 'Categories'); ?></h3>
+            <ul class="list-unstyled">
+            <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
+            </ul>
+          </div>
 
-
-
-
-
-
-
-
-<footer class="footer_widgets">
-        <div class="footer_top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-                        <div class="widgets_container contact_us">
-                            <h3><?php echo language::translate('title_categories', 'Categories'); ?></h3>
-                             <ul class="list-unstyled">
-        <?php foreach ($categories as $category) echo '<li><a href="'. htmlspecialchars($category['link']) .'">'. $category['name'] .'</a></li>' . PHP_EOL; ?>
-      </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-6">
-                        <div class="widgets_container widget_menu">
-                            <h3><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
-                            <div class="footer_menu">
-                                 <ul class="list-unstyled">
+    <?php if ($manufacturers) { ?>
+    <div class="hidden-xs hidden-sm col-md-fifths manufacturers">
+      <h3 class="title"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?></h3>
+      <ul class="list-unstyled">
       <?php foreach ($manufacturers as $manufacturer) echo '<li><a href="'. htmlspecialchars($manufacturer['link']) .'">'. $manufacturer['name'] .'</a></li>' . PHP_EOL; ?>
       </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-5">
-                        <div class="widgets_container widget_app">
-                            <div class="footer_logo">
-                                <a href="index.html"><img src="https://woocommercewebshop.hu/images/logotype.png" alt=""></a>
-                            </div>
-                            <div class="footer_widgetnav_menu">
-                                <ul>
-                                    <li><a href="#">Payment</a></li>
-                                    <li><a href="#">Affiliates</a></li>
-                                    <li><a href="#">Contact</a></li>
-                                    <li><a href="#">Internet</a></li>
-                                </ul>
-                            </div>
-                            <div class="footer_social">
-                                <ul>
-                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
-                                </ul>
-                            </div>
-                            <div class="footer_app">
-                                <ul>
-                                    <li><a href="#"><img src="https://electric.litecart.hu/images/banners/icon-app.jpg" alt=""></a></li>
-                                    <li><a href="#"><img src="https://electric.litecart.hu/images/banners/icon1-app.jpg" alt=""></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-                        <div class="widgets_container widget_menu">
-                            <h3><?php echo language::translate('title_account', 'Account'); ?></h3>
-                            <div class="footer_menu">
-                                <ul class="list-unstyled">
-        <li><a href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
+    </div>
+    <?php } ?>
+
+    <div class="col-xs-halfs col-sm-fourths col-md-fifths account">
+      <h3 class="title"><?php echo language::translate('title_account', 'Account'); ?></h3>
+      <ul class="list-unstyled">
+        <li><a href="<?php echo document::ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a></li>
         <li><a href="<?php echo document::href_ilink('regional_settings'); ?>"><?php echo language::translate('title_regional_settings', 'Regional Settings'); ?></a></li>
         <?php if (empty(customer::$data['id'])) { ?>
         <li><a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('title_create_account', 'Create Account'); ?></a></li>
@@ -73,25 +33,33 @@
         <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
         <?php } ?>
       </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6">
-                        <div class="widgets_container widget_menu">
-                            <h3><?php echo language::translate('title_information', 'Information'); ?></h3>
-                            <div class="footer_menu">
-                                <ul class="list-unstyled">
+    </div>
+
+    <div class="col-xs-halfs col-sm-fourths col-md-fifths information">
+      <h3 class="title"><?php echo language::translate('title_information', 'Information'); ?></h3>
+      <ul class="list-unstyled">
         <?php foreach ($pages as $page) echo '<li><a href="'. htmlspecialchars($page['link']) .'">'. $page['title'] .'</a></li>' . PHP_EOL; ?>
       </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </div>
 
-        <div class="footer_bottom">
-           <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
-				Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart</a>
-        </div>
-    </footer>
+    <div class="hidden-xs col-sm-fourths col-md-fifths contact">
+      <h3 class="title"><?php echo language::translate('title_contact', 'Contact'); ?></h3>
+
+      <p><?php echo nl2br(settings::get('store_postal_address')); ?></p>
+
+      <?php if (settings::get('store_phone')) { ?>
+      <p><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a><p>
+      <?php } ?>
+
+      <p><?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></p>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</footer>
+
+<div id="copyright" class="twelve-eighty">
+  <!-- LiteCart is provided free under license CC BY-ND 4.0 - https://creativecommons.org/licenses/by-nd/4.0/. Removing the link back to litecart.net without permission is a violation - https://www.litecart.net/addons/172/removal-of-attribution-link -->
+  <div class="notice">Copyright &copy; <?php echo date('Y'); ?> <?php echo settings::get('store_name'); ?>. All rights reserved &middot; Powered by <a href="https://www.litecart.net" target="_blank" title="Free e-commerce platform">LiteCart®</a>&nbsp;&nbsp;Design by <a href="https://jinuxweb.com/services/litecart-ecommerce" target="_blank" title="Free e-commerce platform">Jinux-Web ®</a></div>
+</div>

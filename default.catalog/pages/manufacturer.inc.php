@@ -1,13 +1,13 @@
-<div id="sidebar">
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_manufacturer_links.inc.php'); ?>
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_recently_viewed_products.inc.php'); ?>
-</div>
+<aside id="sidebar">
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_manufacturer_links.inc.php'); ?>
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_recently_viewed_products.inc.php'); ?>
+</aside>
 
-<div id="content">
+<main id="content">
   {snippet:notices}
   {snippet:breadcrumbs}
 
-  <article id="box-manufacturer" class="box">
+  <div id="box-manufacturer" class="box">
     <?php if ($products) { ?>
     <div class="btn-group pull-right hidden-xs">
 <?php
@@ -29,11 +29,11 @@
     <?php } ?>
 
     <?php if ($products) { ?>
-    <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column', array('manufacturer_id')); ?>
-    </section>
+    <div class="products row half-gutter">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, 'column'); ?>
+    </div>
     <?php } ?>
 
     <?php echo $pagination; ?>
-  </article>
-</div>
+  </div>
+</main>

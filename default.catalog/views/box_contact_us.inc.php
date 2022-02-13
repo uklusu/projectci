@@ -1,4 +1,4 @@
-<section id="box-contact-us" class="box">
+<div id="box-contact-us" class="box">
 
   <div class="row">
     <div class="col-md-6">
@@ -42,16 +42,15 @@
     </div>
 
     <div class="col-md-6">
-      <h2 class="contact-details"><?php echo language::translate('title_contact_details', 'Contact Details'); ?></h2>
+      <h2><?php echo language::translate('title_contact_details', 'Contact Details'); ?></h2>
 
       <p class="address"><?php echo nl2br(settings::get('store_postal_address')); ?></p>
 
       <?php if (settings::get('store_phone')) { ?><p class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <a href="tel:<?php echo settings::get('store_phone'); ?>"><?php echo settings::get('store_phone'); ?></a></p><?php } ?>
 
       <p class="email"><?php echo functions::draw_fonticon('fa-envelope'); ?> <a href="mailto:<?php echo settings::get('store_email'); ?>"><?php echo settings::get('store_email'); ?></a></p>
-    </div>
 
+      <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/box_store_map.inc.php'); ?>
+    </div>
   </div>
-  
-  
-</section>
+</div>

@@ -1,130 +1,115 @@
-<nav id="site-menu" class="navbar hidden-print">
+<?php
+  if (!function_exists('custom_draw_site_menu_item')) {
+    function custom_draw_site_menu_item($item, $indent=0) {
 
-  <div class="navbar-header">
-    <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search'), false, 'class="navbar-form"'); ?>
+      if (!empty($item['subitems'])) {
+        $output = '<li class="dropdown" data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
+                . '  <a href="'. htmlspecialchars($item['link']) .'" class="dropdown-toggle" data-toggle="dropdown">'. $item['title'] .' <b class="caret"></b></a>'
+                . '  <ul class="dropdown-menu">' . PHP_EOL;
+
+        foreach ($item['subitems'] as $subitem) {
+          $output .= custom_draw_site_menu_item($subitem, $indent+1);
+        }
+
+        $output .= '  </ul>' . PHP_EOL
+                 . '</li>' . PHP_EOL;
+
+      } else {
+        $output = '<li data-type="'. $item['type'] .'" data-id="'. $item['id'] .'">'
+                . '  <a href="'. htmlspecialchars($item['link']) .'">'. $item['title'] .'</a>'
+                . '</li>' . PHP_EOL;
+      }
+
+      return $output;
+    }
+  }
+?>
+<div id="site-menu">
+  <nav class="navbar">
+    <div class="navbar-header hidden">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-menu">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+       <div class="col-xs-auto hidden">
+      <?php echo functions::form_draw_form_begin('search_form', 'get', document::ilink('search'), false, 'class="navbar-form"'); ?>
       <?php echo functions::form_draw_search_field('query', true, 'placeholder="'. language::translate('text_search_products', 'Search products') .' &hellip;"'); ?>
-    <?php echo functions::form_draw_form_end(); ?>
+      <?php echo functions::form_draw_form_end(); ?>
+    </div>
+    </div>
 
-    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#default-menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-  </div>
+    <div id="default-menu" class="navbar-collapse collapse">
 
-  <div id="default-menu" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="hidden-xs">
+          <a href="<?php echo document::ilink(''); ?>" class="navbar-brand"><?php echo functions::draw_fonticon('fa-home'); ?>&nbsp;Home</a>
+        </li>
 
-    <ul class="nav navbar-nav">
-      <li class="hidden-xs">
-        <a href="<?php echo document::ilink(''); ?>" title="<?php echo language::translate('title_home', 'Home'); ?>"><?php echo functions::draw_fonticon('fa-home'); ?></a>
-      </li>
+        <?php foreach ($categories as $item) echo custom_draw_site_menu_item($item); ?>
 
-      <?php if ($categories) { ?>
-      <li class="categories dropdown">
-        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_categories', 'Categories'); ?> <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <?php foreach ($categories as $item) { ?>
-          <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
-          <?php } ?>
-        </ul>
-      </li>
-      <?php } ?>
+        <?php if ($manufacturers) { ?>
+        <li class="manufacturers dropdown">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?> <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <?php foreach ($manufacturers as $item) echo custom_draw_site_menu_item($item); ?>
+          </ul>
+        </li>
+        <?php } ?>
 
-      <?php if ($manufacturers) { ?>
-      <li class="manufacturers dropdown">
-        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_manufacturers', 'Manufacturers'); ?> <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <?php foreach ($manufacturers as $item) { ?>
-          <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
-          <?php } ?>
-        </ul>
-      </li>
-      <?php } ?>
+        <?php if ($pages) { ?>
+        <li class="information dropdown">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?> <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <?php foreach ($pages as $item) echo custom_draw_site_menu_item($item); ?>
+          </ul>
+        </li>
+        <?php } ?>
+      </ul>
 
-      <?php if ($pages) { ?>
-      <li class="information dropdown">
-        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo language::translate('title_information', 'Information'); ?> <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <?php foreach ($pages as $item) { ?>
-          <li><a href="<?php echo htmlspecialchars($item['link']); ?>"><?php echo $item['title']; ?></a></li>
-          <?php } ?>
-        </ul>
-      </li>
-      <?php } ?>
-      
-      
-      
-      <li class="dropdown mega-dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><?php echo language::translate('title_mega-menu', 'Sale!'); ?> <b class="blog"></b></a>
-					<div class="dropdown-menu">
-						<div class="row" style="margin-bottom: 0;">
-							<div class="col-md-8 mega-banner">
-								<a href="https://electric.litecart.hu/samsung-qe43q60tauxxh-43-4k-uhd-qled-smart-tv-p-44"><img src="<?php echo document::href_link('images/banners/banner-1.jpg'); ?>" alt="" title="" />
-								<div class="caption">
-									<div class="banner-sticker new"><?php echo language::translate('sticker_banner_new', 'Samsung Led Tv'); ?></div>
-									<h3><?php echo language::translate('title_banner_1', 'Mega Sale'); ?></h3>
-								</div></a>							
-							</div>
-							<div class="col-md-4 mega-banner">
-								<a href="https://electric.litecart.hu/apple-macbook-pro-13-2019-retina-touch-bar-mv992mg-a-notebook-p-40"><img src="<?php echo document::href_link('images/banners/banner2.jpg'); ?>" alt="" title="" />
-								<div class="caption">
-									<div class="banner-sticker sale"><?php echo language::translate('sticker_banner_sale', 'Sticker Banner Sale'); ?></div>
-									<h3><?php echo language::translate('title_banner_2', 'Title Banner 2'); ?></h3>
-								</div></a>							
-							</div>
-						</div>
-					</div>
-				</li>
-    </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li id="region" class="region">
+          <div class="language"><?php echo language::$selected['name']; ?></div>
+          <div class="currency" title="<?php echo currency::$selected['name']; ?>"><span><?php echo currency::$selected['code']; ?></span></div>
+          <div class="country"><img src="<?php echo WS_DIR_IMAGES .'countries/'. strtolower(customer::$data['country_code']) .'.png'; ?>" style="vertical-align: baseline;" alt="<?php echo reference::country(customer::$data['country_code'])->name; ?>" title="<?php echo reference::country(customer::$data['country_code'])->name; ?>" /></div>
+          <div class="change"><a href="<?php echo document::href_ilink('regional_settings'); ?>" data-toggle="lightbox"><?php echo language::translate('title_change', 'Change'); ?></a></div>
+        </li>
+        <li class="account dropdown">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <?php if (!empty(customer::$data['id'])) { ?>
+              <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
+              <li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
+              <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
+            <?php } else { ?>
+              <li class="login-form">
+                <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form" '); ?>
+                  <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link()); ?>
 
-    <ul class="nav navbar-nav navbar-right">
-      <li class="customer-service">
-        <a href="<?php echo document::href_ilink('customer_service'); ?>"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></a>
-      </li>
-
-      <?php if (settings::get('accounts_enabled')) { ?>
-      <li class="account dropdown">
-        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?php echo functions::draw_fonticon('fa-user'); ?> <?php echo !empty(customer::$data['id']) ? customer::$data['firstname'] : language::translate('title_sign_in', 'Sign In'); ?> <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <?php if (!empty(customer::$data['id'])) { ?>
-            <li><a href="<?php echo document::href_ilink('order_history'); ?>"><?php echo language::translate('title_order_history', 'Order History'); ?></a></li>
-            <li><a href="<?php echo document::href_ilink('edit_account'); ?>"><?php echo language::translate('title_edit_account', 'Edit Account'); ?></a></li>
-            <li><a href="<?php echo document::href_ilink('logout'); ?>"><?php echo language::translate('title_logout', 'Logout'); ?></a></li>
-          <?php } else { ?>
-            <li>
-              <?php echo functions::form_draw_form_begin('login_form', 'post', document::ilink('login'), false, 'class="navbar-form"'); ?>
-                <?php echo functions::form_draw_hidden_field('redirect_url', !empty($_GET['redirect_url']) ? $_GET['redirect_url'] : document::link()); ?>
-
-                <div class="form-group">
-                  <?php echo functions::form_draw_email_field('email', true, 'required="required" placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
-                </div>
-
-                <div class="form-group">
-                  <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
-                </div>
-
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label><?php echo functions::form_draw_checkbox('remember_me', '1'); ?> <?php echo language::translate('title_remember_me', 'Remember Me'); ?></label>
+                  <div class="form-group">
+                    <?php echo functions::form_draw_email_field('email', true, 'required="required" placeholder="'. language::translate('title_email_address', 'Email Address') .'"'); ?>
                   </div>
-                </div>
 
-                <div class="btn-group btn-block">
-                  <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
-                </div>
-              <?php echo functions::form_draw_form_end(); ?>
-            </li>
-            <li class="text-center">
-              <a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
-            </li>
+                  <div class="form-group">
+                    <?php echo functions::form_draw_password_field('password', '', 'placeholder="'. language::translate('title_password', 'Password') .'"'); ?>
+                  </div>
 
-            <li class="text-center">
-              <a href="<?php echo document::href_ilink('reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
-            </li>
-          <?php } ?>
-        </ul>
-      </li>
-      <?php } ?>
-    </ul>
-  </div>
-</nav>
+                  <div class="btn-group btn-block">
+                    <?php echo functions::form_draw_button('login', language::translate('title_sign_in', 'Sign In')); ?>
+                  </div>
+                <?php echo functions::form_draw_form_end(); ?>
+              </li>
+              <li class="text-center">
+                <a href="<?php echo document::href_ilink('create_account'); ?>"><?php echo language::translate('text_new_customers_click_here', 'New customers click here'); ?></a>
+              </li>
+
+              <li class="text-center">
+                <a href="<?php echo document::href_ilink('reset_password'); ?>"><?php echo language::translate('text_lost_your_password', 'Lost your password?'); ?></a>
+              </li>
+            <?php } ?>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

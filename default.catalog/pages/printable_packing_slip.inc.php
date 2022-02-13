@@ -6,21 +6,20 @@
 
 h1 {
   margin: 0;
-  border: none;
 }
 
-.addresses .row > :not(.shipping-address) {
+.addresses .row > *:nth-child(1), .addresses .row > *:nth-child(2) {
   margin-top: 4mm;
 }
 
-.rounded-rectangle {
+.shipping-address .rounded-rectangle {
   border: 1px solid #000;
   border-radius: 5mm;
   padding: 4mm;
   margin-left: -15px;
   margin-bottom: 3mm;
 }
-.rounded-rectangle .value {
+.shipping-address .value {
   margin: 0 !important;
 }
 
@@ -35,20 +34,13 @@ h1 {
 .page .value {
   margin-bottom: 3mm;
 }
-.page .footer .row {
-  margin-bottom: 0;
-}
-
-table.items tbody tr:nth-child(11) {
-  page-break-before: always;
-}
 </style>
 
 <section class="page" data-size="A4">
   <header class="header">
     <div class="row">
       <div class="col-xs-6">
-        <img class="logotype" src="<?php echo document::link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
+        <img class="logotype" src="<?php echo document::link(WS_DIR_IMAGES . 'logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" />
       </div>
 
       <div class="col-xs-6 text-right">
@@ -59,18 +51,15 @@ table.items tbody tr:nth-child(11) {
     </div>
   </header>
 
-  <div class="content">
+  <main class="content">
     <div class="addresses">
       <div class="row">
-        <div class="col-xs-6">
-          <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
-          <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
+        <div class="col-xs-6 billing-address">
+          <div class="label"><?php echo language::translate('title_billing_address', 'Billing Address'); ?></div>
+          <div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer'])); ?></div>
 
-          <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
-          <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
-
-          <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
-          <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_class'])  : '-'; ?></div>
+          <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
+          <div class="value"><?php echo !empty($order['customer']['phone']) ? $order['customer']['phone'] : '-'; ?></div>
         </div>
 
         <div class="col-xs-6 shipping-address">
@@ -78,13 +67,27 @@ table.items tbody tr:nth-child(11) {
             <div class="label"><?php echo language::translate('title_shipping_address', 'Shipping Address'); ?></div>
             <div class="value"><?php echo nl2br(reference::country($order['customer']['shipping_address']['country_code'])->format_address($order['customer']['shipping_address'])); ?></div>
           </div>
-
-          <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
-          <div class="value"><?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></div>
-
-          <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
-          <div class="value"><?php echo !empty($order['customer']['shipping_address']['phone']) ? $order['customer']['shipping_address']['phone'] : '-'; ?></div>
         </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6">
+        <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
+        <div class="value"><?php echo !empty($order['customer']['email']) ? $order['customer']['email'] : '-'; ?></div>
+      </div>
+
+      <div class="col-xs-3">
+        <div class="label"><?php echo language::translate('title_shipping_option', 'Shipping Option'); ?></div>
+        <div class="value"><?php echo !empty($order['shipping_option']['name']) ? $order['shipping_option']['name'] : '-'; ?></div>
+
+        <div class="label"><?php echo language::translate('title_shipping_tracking_id', 'Shipping Tracking ID'); ?></div>
+        <div class="value"><?php echo !empty($order['shipping_tracking_id']) ? $order['shipping_tracking_id'] : '-'; ?></div>
+      </div>
+
+      <div class="col-xs-3">
+        <div class="label"><?php echo language::translate('title_shipping_weight', 'Shipping Weight'); ?></div>
+        <div class="value"><?php echo !empty($order['weight_total']) ? weight::format($order['weight_total'], $order['weight_class'])  : '-'; ?></div>
       </div>
     </div>
 
@@ -105,17 +108,7 @@ table.items tbody tr:nth-child(11) {
 <?php
     if (!empty($item['options'])) {
       foreach ($item['options'] as $key => $value) {
-        if (is_array($value)) {
-          echo '<br />- '.$key .': ';
-          $use_comma = false;
-          foreach ($value as $v) {
-            if ($use_comma) echo ', ';
-            echo $v;
-            $use_comma = true;
-          }
-        } else {
-          echo '<br />- '.$key .': '. $value;
-        }
+        echo '<br />- '.$key .': '. $value;
       }
     }
 ?>
@@ -124,7 +117,27 @@ table.items tbody tr:nth-child(11) {
         <?php } ?>
       </tbody>
     </table>
-  </div>
+
+<?php
+  if (!empty($order['comments'])) {
+    if (in_array('0', array_column($order['comments'], 'hidden'))) {
+?>
+  <h2><?php echo language::translate('title_comments', 'Comments'); ?></h2>
+  <ul class="comments list-unstyled">
+<?php
+      foreach ($order['comments'] as $comment) {
+        if (!empty($comment['hidden'])) continue;
+?>
+    <li><?php echo date(language::$selected['raw_date'], strtotime($comment['date_created'])); ?>: <?php echo $comment['text']; ?></li>
+<?php
+      }
+?>
+  </ul>
+<?php
+    }
+  }
+?>
+  </main>
 
   <?php if (count($order['items']) <= 10) { ?>
   <footer class="footer">
@@ -132,33 +145,32 @@ table.items tbody tr:nth-child(11) {
     <hr />
 
     <div class="row">
-      <div class="col-xs-3">
+      <div class="col-md-auto">
         <div class="label"><?php echo language::translate('title_address', 'Address'); ?></div>
         <div class="value"><?php echo nl2br(settings::get('store_postal_address')); ?></div>
       </div>
 
-      <div class="col-xs-3">
-        <?php if (settings::get('store_phone')) { ?>
+      <?php if (settings::get('store_phone')) { ?>
+      <div class="col-md-auto">
         <div class="label"><?php echo language::translate('title_phone', 'Phone'); ?></div>
         <div class="value"><?php echo settings::get('store_phone'); ?></div>
-        <?php } ?>
-
-        <?php if (settings::get('store_tax_id')) { ?>
-        <div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
-        <div class="value"><?php echo settings::get('store_tax_id'); ?></div>
-        <?php } ?>
       </div>
+      <?php } ?>
 
-      <div class="col-xs-3">
+      <div class="col-md-auto">
         <div class="label"><?php echo language::translate('title_email', 'Email'); ?></div>
         <div class="value"><?php echo settings::get('store_email'); ?></div>
 
         <div class="label"><?php echo language::translate('title_website', 'Website'); ?></div>
-        <div class="value"><?php echo document::ilink(''); ?></div>
+        <div class="value"><?php echo htmlspecialchars(document::ilink('')); ?></div>
       </div>
 
-      <div class="col-xs-3">
+      <?php if (settings::get('store_tax_id')) { ?>
+      <div class="col-md-auto">
+        <div class="label"><?php echo language::translate('title_vat_registration_id', 'VAT Registration ID'); ?></div>
+        <div class="value"><?php echo settings::get('store_tax_id'); ?></div>
       </div>
+      <?php } ?>
     </div>
   </footer>
   <?php } ?>

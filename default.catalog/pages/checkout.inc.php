@@ -1,12 +1,12 @@
-<div id="content" class="twelve-eighty">
+<main id="content" class="twelve-eighty">
   {snippet:notices}
 
-  <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process'), false, 'autocomplete="off"'); ?>
+  <?php echo functions::form_draw_form_begin('checkout_form', 'post', document::ilink('order_process')); ?>
 
-  <section id="box-checkout" class="box">
+  <div id="box-checkout" class="box white">
     <div class="cart wrapper"></div>
 
-    <div class="row" style="grid-gap: 2rem;">
+    <div class="row">
       <div class="col-md-6">
         <div class="customer wrapper"></div>
       </div>
@@ -19,10 +19,10 @@
     </div>
 
     <div class="summary wrapper"></div>
-  </section>
+  </div>
 
   <?php echo functions::form_draw_form_end(); ?>
-</div>
+</main>
 
 <script>
 // Queue Handler
@@ -36,7 +36,6 @@
   ];
 
   function queueUpdateTask(component, data, refresh) {
-
     updateQueue = jQuery.grep(updateQueue, function(tasks) {
       return (tasks.component == component) ? false : true;
     });
@@ -54,7 +53,8 @@
   function runQueue() {
 
     if (queueRunLock) return;
-    if (!updateQueue.length) return;
+
+    if (updateQueue.length == 0) return;
 
     queueRunLock = true;
 
@@ -74,51 +74,29 @@
     }
 
     var url = '';
-    switch (task.component) {
+    switch(task.component) {
       case 'cart':
-        url = '<?php echo document::ilink('ajax/checkout_cart'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_cart.html'); ?>';
         break;
       case 'customer':
-        url = '<?php echo document::ilink('ajax/checkout_customer'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_customer.html'); ?>';
         break;
       case 'shipping':
-        url = '<?php echo document::ilink('ajax/checkout_shipping'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_shipping.html'); ?>';
         break;
       case 'payment':
-        url = '<?php echo document::ilink('ajax/checkout_payment'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_payment.html'); ?>';
         break;
       case 'summary':
-        url = '<?php echo document::ilink('ajax/checkout_summary'); ?>';
+        url = '<?php echo document::ilink('ajax/checkout_summary.html'); ?>';
         break;
       default:
         alert('Error: Invalid component ' + task.component);
         break;
     }
 
-    if (task.data === true) {
-      switch (task.component) {
-        case 'customer':
-          task.data = $('#box-checkout-customer :input').serialize();
-          break;
-        case 'shipping':
-          task.data = $('#box-checkout-shipping .option.active :input').serialize();
-          break;
-        case 'payment':
-          task.data = $('#box-checkout-payment .option.active :input').serialize();
-          break;
-        case 'summary':
-          task.data = $('#box-checkout-summary :input').serialize();
-          break;
-      }
-    }
-
-    if (task.component == 'summary') {
-      var comments = $(':input[name="comments"]').val();
-      var terms_agreed = $(':input[name="terms_agreed"]').prop('checked');
-    }
-
     $.ajax({
-      type: task.data ? 'post' : 'get',
+      type: 'post',
       url: url,
       data: task.data,
       dataType: 'html',
@@ -126,20 +104,15 @@
         jqXHR.overrideMimeType('text/html;charset=<?php echo language::$selected['charset']; ?>');
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        $('#box-checkout .'+ task.component +'.wrapper').html('An unexpected error occurred, try reloading the page.');
+        if (console) console.warn('Error');
+        $('#box-checkout .'+ task.component +'.wrapper').html(textStatus + ': ' + errorThrown);
       },
       success: function(html) {
         if (task.refresh) $('#box-checkout .'+ task.component +'.wrapper').html(html).fadeTo('fast', 1);
-        if (task.component == 'summary') {
-          $(':input[name="comments"]').val(comments);
-          $(':input[name="terms_agreed"]').prop('checked', terms_agreed);
-        }
       },
       complete: function(html) {
         if (!updateQueue.length) {
-          $('body > .loader-wrapper').fadeOut('fast', function(){
-            $(this).remove();
-          });
+          $('body > .loader-wrapper').fadeOut('fast', function(){$(this).remove();});
         }
         queueRunLock = false;
         runQueue();
@@ -153,41 +126,43 @@
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="remove_cart_item"]', function(e){
     e.preventDefault();
-    var data = $(this).closest('li').find(':input').serialize()
+    var data = 'token=' + $(':input[name="token"]').val()
+             + '&' + $(this).closest('td').find(':input').serialize()
              + '&remove_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
-    queueUpdateTask('customer', true, true);
-    queueUpdateTask('shipping', true, true);
-    queueUpdateTask('payment', true, true);
-    queueUpdateTask('summary', true, true);
+    queueUpdateTask('customer', null, true);
+    queueUpdateTask('shipping', null, true);
+    queueUpdateTask('payment', null, true);
+    queueUpdateTask('summary', null, true);
   });
 
   $('#box-checkout .cart.wrapper').on('click', 'button[name="update_cart_item"]', function(e){
     e.preventDefault();
-    var data = $(this).closest('li').find(':input').serialize()
+    var data = 'token=' + $(':input[name="token"]').val()
+             + '&' + $(this).closest('td').find(':input').serialize()
              + '&update_cart_item=' + $(this).val();
     queueUpdateTask('cart', data, true);
-    queueUpdateTask('customer', true, true);
-    queueUpdateTask('shipping', true, true);
-    queueUpdateTask('payment', true, true);
-    queueUpdateTask('summary', true, true);
+    queueUpdateTask('customer', null, true);
+    queueUpdateTask('shipping', null, true);
+    queueUpdateTask('payment', null, true);
+    queueUpdateTask('summary', null, true);
   });
 
 // Customer Form: Toggles
 
   $('#box-checkout .customer.wrapper').on('change', 'input[name="different_shipping_address"]', function(e){
     if (this.checked == true) {
-      $('#box-checkout-customer .shipping-address fieldset').removeAttr('disabled').slideDown('fast');
+      $('#shipping-address-container').slideDown('fast');
     } else {
-      $('#box-checkout-customer .shipping-address fieldset').attr('disabled', 'disabled').slideUp('fast');
+      $('#shipping-address-container').slideUp('fast');
     }
   });
 
   $('#box-checkout .customer.wrapper').on('change', 'input[name="create_account"]', function(){
     if (this.checked == true) {
-      $('#box-checkout-customer .account fieldset').removeAttr('disabled').slideDown('fast');
+      $('#account-container').slideDown('fast');
     } else {
-      $('#box-checkout-customer .account fieldset').attr('disabled', 'disabled').slideUp('fast');
+      $('#account-container').slideUp('fast');
     }
   });
 
@@ -196,16 +171,26 @@
   $('#box-checkout .customer.wrapper').on('change', '.billing-address :input', function() {
     if ($(this).val() == '') return;
     if (console) console.log('Retrieving address (Trigger: '+ $(this).attr('name') +')');
-    $.getJSON(
-      '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
-      $('.billing-address :input').serialize(),
-      function(data) {
+    $.ajax({
+      url: '<?php echo document::ilink('ajax/get_address.json'); ?>?trigger='+$(this).attr('name'),
+      type: 'post',
+      data: 'token=' + $(':input[name="token"]').val()
+             + '&' + $('.billing-address :input').serialize(),
+      cache: false,
+      async: true,
+      dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn(errorThrown.message + "\n" + jqXHR.responseText);
+      },
+      success: function(data) {
         if (data['alert']) alert(data['alert']);
         $.each(data, function(key, value) {
-          $('.billing-address :input[name="'+key+'"]').val(value);
+          if ($('.billing-address *[name="'+key+'"]').length && $('.billing-address *[name="'+key+'"]').val() == '') {
+            $('.billing-address *[name="'+key+'"]').val(value);
+          }
         });
-      }
-    );
+      },
+    });
   });
 
 // Customer Form: Fields
@@ -230,7 +215,6 @@
       $('input[name="phone"]').removeAttr('placeholder');
     }
 
-    <?php if (settings::get('customer_field_zone')) { ?>
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -238,6 +222,9 @@
       cache: true,
       async: true,
       dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn(errorThrown.message);
+      },
       success: function(data) {
         $('select[name="zone_code"]').html('');
         if (data.length) {
@@ -253,7 +240,6 @@
         $('body').css('cursor', 'auto');
       }
     });
-    <?php } ?>
   });
 
   $('#box-checkout .customer.wrapper').on('input propertyChange', 'select[name="shipping_address[country_code]"]', function(e) {
@@ -270,7 +256,7 @@
       $('input[name="shipping_address[phone]"]').removeAttr('placeholder');
     }
 
-    <?php if (settings::get('customer_field_zone')) { ?>
+    console.log('Retrieving zones');
     $('body').css('cursor', 'wait');
     $.ajax({
       url: '<?php echo document::ilink('ajax/zones.json'); ?>?country_code=' + $(this).val(),
@@ -278,6 +264,9 @@
       cache: true,
       async: false,
       dataType: 'json',
+      error: function(jqXHR, textStatus, errorThrown) {
+        if (console) console.warn(errorThrown.message);
+      },
       success: function(data) {
         $('select[name="shipping_address[zone_code]"]').html('');
         if (data.length) {
@@ -293,16 +282,13 @@
         $('body').css('cursor', 'auto');
       }
     });
-    <?php } ?>
   });
 
 // Customer Form: Checksum
 
-  window.customer_form_changed = null;
-  window.customer_form_checksum = null;
-  $('#box-checkout .customer.wrapper').on('input change', ':input', function(e) {
+  window.customer_form_changed = false;
+  $('#box-checkout .customer.wrapper').on('input propertyChange', '#box-checkout-customer :input', function(e) {
     if ($('#box-checkout-customer :input').serialize() != window.customer_form_checksum) {
-      if (window.customer_form_checksum == null) return;
       window.customer_form_changed = true;
       $('#box-checkout-customer button[name="save_customer_details"]').removeAttr('disabled');
     } else {
@@ -320,11 +306,12 @@
         if (!$(this).is(':focus')) {
           if (window.customer_form_changed) {
             if (console) console.log('Autosaving customer details');
-            var data = $('#box-checkout-customer :input').serialize();
+            var data = 'token=' + $(':input[name="token"]').val()
+                     + '&' + $('#box-checkout-customer :input').serialize();
             queueUpdateTask('customer', data, true);
             queueUpdateTask('cart', null, true);
-            queueUpdateTask('shipping', true, true);
-            queueUpdateTask('payment', true, true);
+            queueUpdateTask('shipping', null, true);
+            queueUpdateTask('payment', null, true);
             queueUpdateTask('summary', null, true);
           }
         }
@@ -340,12 +327,13 @@
 
   $('#box-checkout .customer.wrapper').on('click', 'button[name="save_customer_details"]', function(e){
     e.preventDefault();
-    var data = $('#box-checkout-customer :input').serialize()
+    var data = 'token=' + $(':input[name="token"]').val()
+             + '&' + $('#box-checkout-customer :input').serialize()
              + '&save_customer_details=true';
     queueUpdateTask('customer', data, true);
     queueUpdateTask('cart', null, true);
-    queueUpdateTask('shipping', true, true);
-    queueUpdateTask('payment', true, true);
+    queueUpdateTask('shipping', null, true);
+    queueUpdateTask('payment', null, true);
     queueUpdateTask('summary', null, true);
     window.customer_form_checksum = $('#box-checkout-customer :input').serialize();
     $('#box-checkout-customer :input:first-child').trigger('change');
@@ -355,15 +343,16 @@
 
   $('#box-checkout .shipping.wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#box-checkout-shipping .option').removeClass('active');
-    $(this).find('input[name="shipping[option_id]"]').prop('checked', true).trigger('change');
+    $(this).find('input[name="shipping[option_id]"]').prop('checked', true);
     $(this).addClass('active');
 
-    $('#box-checkout-shipping .option.active .fields :input').prop('disabled', false);
-    $('#box-checkout-shipping .option:not(.active) .fields :input').prop('disabled', true);
+    $('#box-checkout-shipping .option.active :input').prop('disabled', false);
+    $('#box-checkout-shipping .option:not(.active) :input').prop('disabled', true);
 
-    var data = $('#box-checkout-shipping .option.active :input').serialize();
+    var data = 'token=' + $(':input[name="token"]').val()
+             + '&' + $('#box-checkout-shipping .option.active :input').serialize();
     queueUpdateTask('shipping', data, false);
-    queueUpdateTask('payment', true, true);
+    queueUpdateTask('payment', null, true);
     queueUpdateTask('summary', null, true);
   });
 
@@ -371,13 +360,14 @@
 
   $('#box-checkout .payment.wrapper').on('click', '.option:not(.active):not(.disabled)', function(){
     $('#box-checkout-payment .option').removeClass('active');
-    $(this).find('input[name="payment[option_id]"]').prop('checked', true).trigger('change');
+    $(this).find('input[name="payment[option_id]"]').prop('checked', true);
     $(this).addClass('active');
 
-    $('#box-checkout-payment .option.active .fields :input').prop('disabled', false);
-    $('#box-checkout-payment .option:not(.active) .fields :input').prop('disabled', true);
+    $('#box-checkout-payment .option.active :input').prop('disabled', false);
+    $('#box-checkout-payment .option:not(.active) :input').prop('disabled', true);
 
-    var data = $('#box-checkout-payment .option.active :input').serialize();
+    var data = 'token=' + $(':input[name="token"]').val()
+             + '&' + $('#box-checkout-payment .option.active :input').serialize();
     queueUpdateTask('payment', data, false);
     queueUpdateTask('summary', null, true);
   });
@@ -392,6 +382,6 @@
   });
 
   $('body').on('submit', 'form[name="checkout_form"]', function(e) {
-    $('#box-checkout-summary button[name="confirm_order"]').css('display', 'none').before('<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo functions::general_escape_js(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>');
+    $('#box-checkout-summary button[name="confirm_order"]').css('display', 'none').before('<div class="btn btn-block btn-default btn-lg disabled"><?php echo functions::draw_fonticon('fa-spinner'); ?> <?php echo htmlspecialchars(language::translate('text_please_wait', 'Please wait')); ?>&hellip;</div>');
   });
 </script>
