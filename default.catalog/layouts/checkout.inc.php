@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{snippet:language}" dir="{snippet:text_direction}">
+<html lang="{snippet:language}">
 <head>
 <title>{snippet:title}</title>
 <meta charset="{snippet:charset}" />
@@ -8,32 +8,30 @@
 <link rel="stylesheet" href="{snippet:template_path}css/framework.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/app.min.css" />
 <link rel="stylesheet" href="{snippet:template_path}css/checkout.min.css" />
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet">
 {snippet:head_tags}
 {snippet:style}
 </head>
 <body>
 
-<header id="header" class="twelve-eighty">
-  <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
-    <img src="<?php echo document::href_link('images/logotype.png'); ?>" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
-  </a>
+<div id="header-wrapper">
+  <header id="header" class="twelve-eighty">
 
-  <div class="customer-service hidden-xs">
-    <div class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></div>
-    <?php if (settings::get('store_phone')) { ?>
-    <div class="phone"><?php echo functions::draw_fonticon('fa-phone'); ?> <?php echo settings::get('store_phone'); ?></div>
-    <?php } else { ?>
-    <div class="email"><?php echo functions::draw_fonticon('fa-envelope'); ?> <?php echo settings::get('store_email'); ?></div>
-    <?php } ?>
+    <a class="logotype" href="<?php echo document::href_ilink(''); ?>">
+      <img src="<?php echo WS_DIR_IMAGES; ?>logotype.png" style="max-width: 250px; max-height: 60px;" alt="<?php echo settings::get('store_name'); ?>" title="<?php echo settings::get('store_name'); ?>" />
+    </a>
+
+    <div class="customer-service hidden-xs">
+      <div class="title"><?php echo language::translate('title_customer_service', 'Customer Service'); ?></div>
+      <div class="phone"><?php echo settings::get('store_phone'); ?></div>
+    </div>
+  </header>
+</div>
+
+<div id="page" class="shadow">
+  <div id="main">
+    {snippet:content}
   </div>
-</header>
-
-
-<main id="page">
-  {snippet:content}
-</main>
+</div>
 
 {snippet:foot_tags}
 <script src="{snippet:template_path}js/app.min.js"></script>

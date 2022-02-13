@@ -1,12 +1,11 @@
-<div id="sidebar" class="hidden-xs">
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_information_links.inc.php'); ?>
-</div>
+<aside id="sidebar">
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_information_links.inc.php'); ?>
+</aside>
 
-<div id="content">
+<main id="content">
   {snippet:notices}
 
-  <section id="box-information" class="box">
+  <div id="box-information" class="box">
     <?php echo $content; ?>
-  </section>
-
-</div>
+  </div>
+</main>

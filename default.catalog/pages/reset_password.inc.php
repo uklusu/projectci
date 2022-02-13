@@ -1,11 +1,12 @@
-<div id="sidebar">
-    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_customer_service_links.inc.php'); ?>
-</div>
+<aside id="sidebar">
+    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
+</aside>
 
-<div id="content">
+<main id="content">
   {snippet:notices}
+  {snippet:breadcrumbs}
 
-  <section id="box-reset-password" class="box">
+  <div id="box-reset-password" class="box">
 
     <h2 class="title"><?php echo language::translate('title_reset_password', 'Reset Password'); ?></h2>
 
@@ -33,15 +34,10 @@
       </div>
       <?php } ?>
 
-      <?php if (settings::get('captcha_enabled')) { ?>
-      <div class="form-group">
-        <label><?php echo language::translate('title_captcha', 'CAPTCHA'); ?></label>
-        <?php echo functions::form_draw_captcha_field('captcha', 'reset_password', 'required="required"'); ?>
-      </div>
-      <?php } ?>
-
-      <?php echo functions::form_draw_button('reset_password', language::translate('title_reset_password', 'Reset Password')); ?>
+      <p class="btn-group btn-block">
+        <?php echo functions::form_draw_button('reset_password', language::translate('title_reset_password', 'Reset Password')); ?>
+      </p>
 
     <?php echo functions::form_draw_form_end(); ?>
-  </section>
-</div>
+  </div>
+</main>

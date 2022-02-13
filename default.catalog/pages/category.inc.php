@@ -1,39 +1,45 @@
-<div id="sidebar">
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_category_tree.inc.php'); ?>
+<aside id="sidebar">
+  <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_TEMPLATE . 'views/column_left.inc.php'); ?>
+</aside>
 
-  <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_filter.inc.php'); ?>
-</div>
-
-<div id="content">
+<main id="content">
   {snippet:notices}
+  {snippet:breadcrumbs}
 
-  <article id="box-category" class="box">
-	
+  <div id="box-category" class="box">
+
     <?php if ($products) { ?>
-    <div class="dropdown pull-right">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Sort by <i class="fa fa-angle-down"></i>
-      </button>
-
-      <ul class="dropdown-menu">
+    <div class="btn-group pull-right hidden-xs">
 <?php
   foreach ($sort_alternatives as $key => $value) {
     if ($_GET['sort'] == $key) {
-      echo '<li><a href="#" class="active">'. $value .'</a></li>';
+      echo '<span class="btn btn-default active">'. $value .'</span>';
     } else {
-      echo '<li><a href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $value .'</a></li>';
+      echo '<a class="btn btn-default" href="'. document::href_ilink(null, array('sort' => $key), true) .'">'. $value .'</a>';
     }
   }
 ?>
-      </ul>
     </div>
-    <?php } ?>	
+    <?php } ?>
 
     <h1 class="title"><?php echo $h1_title; ?></h1>
 
-    <section class="listing products">
-      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type'], array('category_id')); ?>
-    </section>
+    <?php if ($_GET['page'] == 1 && trim(strip_tags($description))) { ?>
+    <p class="description"><?php echo $description; ?></p>
+    <?php } ?>
+
+    <?php if ($_GET['page'] == 1 && $subcategories) { ?>
+    <div class="categories row half-gutter hidden-xs">
+      <?php foreach ($subcategories as $subcategory) echo functions::draw_listing_category($subcategory); ?>
+    </div>
+    <?php } ?>
+
+    <?php if ($products) { ?>
+    <div class="products row half-gutter">
+      <?php foreach ($products as $product) echo functions::draw_listing_product($product, $product['listing_type']); ?>
+    </div>
+    <?php } ?>
 
     <?php echo $pagination; ?>
-  </article>
-</div>
+  </div>
+</main>

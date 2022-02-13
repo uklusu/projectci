@@ -1,4 +1,4 @@
-<section id="box-slides" class="carousel slide" data-ride="carousel">
+<div id="box-slides" class="box carousel slide" data-ride="carousel">
 
   <div class="carousel-inner">
 <?php
@@ -9,9 +9,9 @@
       echo '<a href="'. htmlspecialchars($slide['link']) .'">' . PHP_EOL;
     }
 
-    echo '<img src="'. document::href_link($slide['image']) .'" alt="" style="width: 100%;" />' . PHP_EOL;
+    echo '<img src="'. $slide['image'] .'" alt="" style="width: 100%;" /></a>' . PHP_EOL;
 
-    if (!empty($slide['caption'])) {
+   if (!empty($slide['caption'])) {
       echo '<div class="carousel-caption">'. $slide['caption'] .'</div>' . PHP_EOL;
     }
 
@@ -24,7 +24,6 @@
 ?>
   </div>
 
-  <?php if (count($slides) > 1) { ?>
   <ol class="carousel-indicators">
     <?php foreach ($slides as $key => $slide) echo '<li data-target="#box-slides" data-slide-to="'.  $key .'"'. (($key == 0) ? ' class="active"' : '') .'></li>'; ?>
   </ol>
@@ -35,5 +34,4 @@
   <a class="right carousel-control" href="#box-slides" data-slide="next">
     <span class="icon-next"><?php echo functions::draw_fonticon('fa-chevron-right'); ?></span>
   </a>
-  <?php } ?>
-</section>
+</div>

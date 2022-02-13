@@ -1,9 +1,7 @@
-<section id="box-popular-products" class="box">
+<div id="box-popular-products" class="box">
 
-  <h2 class="section-title text-center"><?php echo language::translate('title_popular_products', 'Popular Products'); ?></h2>
-
-  <div class="listing products">
+  <div class="products row half-gutter text-center">
     <?php foreach ($products as $product) echo functions::draw_listing_product($product); ?>
   </div>
 
-</section>
+</div>

@@ -1,14 +1,15 @@
-<div id="sidebar" class="hidden-xs">
+<aside id="sidebar">
   <div id="column-left">
-    <?php include vmod::check(FS_DIR_APP . 'includes/boxes/box_customer_service_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_customer_service_links.inc.php'); ?>
+    <?php include vmod::check(FS_DIR_HTTP_ROOT . WS_DIR_BOXES . 'box_account_links.inc.php'); ?>
   </div>
-</div>
+</aside>
 
-<div id="content">
+<main id="content">
   {snippet:notices}
 
-  <section id="box-customer-service" class="box">
+  <div id="box-customer-service" class="box">
     <?php echo $content; ?>
-  </section>
+  </div>
 
-</div>
+</main>
