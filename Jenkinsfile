@@ -37,7 +37,15 @@ pipeline {
                 ssh -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa  ubuntu@$IP_ADD sudo docker cp /home/ubuntu/default.catalog servs:/var/www/html/includes/templates/
 
                '''
-
+               sh '''
+                              export status=$(curl -o /dev/null -s -w "%{http_code}\n" http://$IP_ADD/index.php)
+                              if [ $status -eq 301 ]
+                              then
+                              exit 0
+                              else
+                              exit 1
+                              fi
+                              '''
           }
         }
         stage('updating website_on_prod') {
