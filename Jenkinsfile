@@ -21,7 +21,7 @@ pipeline {
                 scp -r -o StrictHostKeyChecking=no -i /home/ubuntu/id_rsa $PWD/default.catalog ubuntu@$IP_PROD:/home/ubuntu
 
                 '''
-                echo "file transfer done"
+                echo "transfer done"
 
             }
         }
